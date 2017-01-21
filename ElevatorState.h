@@ -3,8 +3,8 @@
 
 #include <string>
 #include <set>
-#include <iostream>  
-#include <memory>  
+#include <iostream>
+#include <memory>
 
 using std::string;
 using std::set;
