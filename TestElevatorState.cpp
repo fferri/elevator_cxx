@@ -1,5 +1,6 @@
 #include "ElevatorState.h"
 #include "PreconditionException.h"
+#include "Util.h"
 
 #include <functional>
 #include <utility>
@@ -19,15 +20,17 @@ using std::stack;
 using std::cout;
 using std::endl;
 
-typedef ElevatorState State;
+using State = ElevatorState;
+using Action = function<State::Ptr(State::Ptr)>;
+using Predicate = function<bool(State::Ptr)>;
 
 struct ProgramState;
 
 class Program
 {
 public:
-    typedef shared_ptr<Program> Ptr;
-
+    typedef std::shared_ptr<Program> Ptr;
+    
     virtual vector<ProgramState> trans(State::Ptr state) = 0;
 
     virtual bool isFinal(State::Ptr state) = 0;
@@ -78,9 +81,11 @@ private:
         {
             ProgramState ps = s.top();
             s.pop();
+            //cout << "ProgramStateIterator:  pop " << *ps.program << "  " << *ps.state << endl;
             for(auto& x : ps.trans())
             {
                 s.push(x);
+                //cout <<"ProgramStateIterator: push " << *x.program << "  " << *x.state << endl;
             }
         }
     }
@@ -106,11 +111,14 @@ public:
     }
 };
 
-class Empty : public Program
+class Empty : public Program, public add_make_shared<Empty>
 {
-public:
+protected:
+    friend class add_make_shared<Empty>;
+    
     Empty() = default;
 
+public:
     virtual vector<ProgramState> trans(State::Ptr state)
     {
         return vector<ProgramState>();
@@ -127,25 +135,23 @@ public:
     }
 };
 
-Program::Ptr empty()
+class Exec : public Program, public add_make_shared<Exec>
 {
-    return make_shared<Empty>();
-}
+private:
+    friend class add_make_shared<Exec>;
 
-class Exec : public Program
-{
-public:
-    Exec(function<State::Ptr(State::Ptr)> action_)
+    Exec(Action action_)
         : action(action_)
     {
     }
 
+public:
     virtual vector<ProgramState> trans(State::Ptr state)
     {
         vector<ProgramState> ret;
         try
         {
-            ret.push_back(ProgramState(empty(), action(state)));
+            ret.push_back(ProgramState(Empty::make_shared(), action(state)));
         }
         catch(PreconditionException& ex)
         {
@@ -164,23 +170,26 @@ public:
     }
 
 private:
-    function<State::Ptr(State::Ptr)> action;
+    Action action;
 };
 
-class Test : public Program
+class Test : public Program, public add_make_shared<Test>
 {
-public:
-    Test(function<bool(State::Ptr)> predicate_)
+private:
+    friend class add_make_shared<Test>;
+
+    Test(Predicate predicate_)
         : predicate(predicate_)
     {
     }
 
+public:
     virtual vector<ProgramState> trans(State::Ptr state)
     {
         vector<ProgramState> ret;
         if(predicate(state))
         {
-            ret.push_back(ProgramState(empty(), state));
+            ret.push_back(ProgramState(Empty::make_shared(), state));
         }
         return ret;
     }
@@ -196,17 +205,20 @@ public:
     }
 
 private:
-    function<bool(State::Ptr)> predicate;
+    Predicate predicate;
 };
 
-class Sequence : public Program
+class Sequence : public Program, public add_make_shared<Sequence>
 {
-public:
+private:
+    friend class add_make_shared<Sequence>;
+
     Sequence(Program::Ptr p1_, Program::Ptr p2_)
         : p1(p1_), p2(p2_)
     {
     }
 
+public:
     virtual vector<ProgramState> trans(State::Ptr state)
     {
         vector<ProgramState> ret;
@@ -218,7 +230,7 @@ public:
         else
         {
             for(auto& ps : p1->trans(state))
-                ret.push_back(ProgramState(make_shared<Sequence>(ps.program, p2), ps.state));
+                ret.push_back(ProgramState(Sequence::make_shared(ps.program, p2), ps.state));
         }
         return ret;
     }
@@ -243,14 +255,17 @@ private:
     Program::Ptr p2;
 };
 
-class Choose : public Program
+class Choose : public Program, public add_make_shared<Choose>
 {
-public:
+private:
+    friend class add_make_shared<Choose>;
+
     Choose(Program::Ptr p1_, Program::Ptr p2_)
         : p1(p1_), p2(p2_)
     {
     }
 
+public:
     virtual vector<ProgramState> trans(State::Ptr state)
     {
         vector<ProgramState> ret;
@@ -281,39 +296,41 @@ private:
     Program::Ptr p2;
 };
 
-class Star : public Program
+class Star : public Program, public add_make_shared<Star>
 {
-public:
-    Star(Program::Ptr p1_)
-        : p1(p1_)
+private:
+    friend class add_make_shared<Star>;
+
+    Star(Program::Ptr p_)
+        : p(p_)
     {
     }
 
+public:
     virtual vector<ProgramState> trans(State::Ptr state)
     {
         vector<ProgramState> ret;
-        ret.push_back(ProgramState(make_shared<Choose>(empty(), make_shared<Sequence>(p1, make_shared<Star>(p1))), state));
+        for(auto& ps : p->trans(state))
+            ret.push_back(ProgramState(Sequence::make_shared(ps.program, shared_from_this()), ps.state));
+        ret.push_back(ProgramState(Empty::make_shared(), state));
         return ret;
     }
 
     virtual bool isFinal(State::Ptr state)
     {
-        return p1->isFinal(state) || p2->isFinal(state);
+        return false;
     }
 
     virtual string str() const
     {
-        string s = "Choose(";
-        s += p1->str();
-        s += ", ";
-        s += p2->str();
+        string s = "Star(";
+        s += p->str();
         s += ")";
         return s;
     }
 
 private:
-    Program::Ptr p1;
-    Program::Ptr p2;
+    Program::Ptr p;
 };
 
 ostream& operator<<(ostream& os, const Program& p)
@@ -328,59 +345,69 @@ ostream& operator<<(ostream& os, const ProgramState& ps)
     return os;
 }
 
+// convenience shared_ptr constructors:
+
+Program::Ptr empty() {
+    return Empty::make_shared();
+}
+
+Program::Ptr exec(Action a) {
+    return Exec::make_shared(a);
+}
+
+Program::Ptr test(Predicate p) {
+    return Test::make_shared(p);
+}
+
+Program::Ptr seq(Program::Ptr p1, Program::Ptr p2) {
+    return Sequence::make_shared(p1, p2);
+}
+
+Program::Ptr choose(Program::Ptr p1, Program::Ptr p2) {
+    return Choose::make_shared(p1, p2);
+}
+
+Program::Ptr star(Program::Ptr p) {
+    return Star::make_shared(p);
+}
+
 int main()
 {
     typedef ElevatorState State;
 
     int at = 0;
     set<int> lights = {3, 5};
-    State::Ptr s0 = make_shared<State>(at, lights);
-    cout << "s0 = " << *s0 << endl;
+    State::Ptr s0 = State::make_shared(at, lights);
 
-    State::Ptr s1 = s0->up()->up()->up()->turnOff();
-    cout << "s1 = s0->up()->up()->up()->turnOff() = " << *s1 << endl;
+    Program::Ptr down = Exec::make_shared([](State::Ptr s) -> State::Ptr {return s->down();});
+    Program::Ptr up = Exec::make_shared([](State::Ptr s) -> State::Ptr {return s->up();});
+    Program::Ptr turnOff = Exec::make_shared([](State::Ptr s) -> State::Ptr {return s->turnOff();});
+    Predicate allOff = [](State::Ptr s) -> bool {return s->lights.empty();};
+    
+    Program::Ptr serve_a_floor = choose(
+        seq(star(up), turnOff),
+        seq(star(down), turnOff)
+    );
+    
+    Program::Ptr serve_all_floors = seq(
+        star(serve_a_floor),
+        test(allOff)
+    );
+    
+    Program::Ptr p = serve_all_floors;
 
-    State::Ptr s2 = s1->down()->down();
-    cout << "s2 = s1->down()->down() = " << *s2 << endl;
-
-    typedef Program P;
-    P::Ptr at1 = make_shared<Test>([](State::Ptr s) -> bool {return s->at == 1;});
-    P::Ptr down = make_shared<Exec>([](State::Ptr s) -> State::Ptr {return s->down();});
-    P::Ptr at0 = make_shared<Test>([](State::Ptr s) -> bool {return s->at == 0;});
-    P::Ptr up = make_shared<Exec>([](State::Ptr s) -> State::Ptr {return s->up();});
-    P::Ptr up2 = make_shared<Sequence>(up, up);
-    P::Ptr up3 = make_shared<Sequence>(up, up2);
-    P::Ptr up4 = make_shared<Sequence>(up, up3);
-    P::Ptr up5 = make_shared<Sequence>(up, up4);
-    P::Ptr seq1 = make_shared<Sequence>(at1, down);
-    P::Ptr seq2 = make_shared<Sequence>(at0, up);
-    P::Ptr p1 = make_shared<Choose>(seq1, seq2);
-
-    P::Ptr p = make_shared<Sequence>(
-            //make_shared<Star>(up),
-            make_shared<Choose>(
-                up,
-                make_shared<Choose>(
-                    up2,
-                    make_shared<Choose>(
-                        up3,
-                        make_shared<Choose>(
-                            up4,
-                            up5
-                        )
-                    )
-                )
-            ),
-            make_shared<Test>([](State::Ptr s) -> bool {
-                return s->at >= 3 && s->at <= 5;
-            }));
-    ProgramState ps0(p, s0);
-    cout << "ps0 = " << ps0 << endl;
-    ProgramStateIterator it(ps0);
+    const int maxSolutions = 10;
+    int numSolutions = 0;
+    ProgramStateIterator it(ProgramState(p, s0));
     while(it.hasNext())
     {
         ProgramState ps = it.next();
         cout << "transStar: s = " << *ps.state << endl;
+        if(++numSolutions >= maxSolutions)
+        {
+            cout << "Showing only first " << maxSolutions << " solutions" << endl;
+            break;
+        }
     }
 }
 
