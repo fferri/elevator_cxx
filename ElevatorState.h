@@ -1,6 +1,8 @@
 #ifndef ELEVATORSTATE_H_INCLUDED
 #define ELEVATORSTATE_H_INCLUDED
 
+#include "Util.h"
+
 #include <string>
 #include <set>
 #include <iostream>
@@ -12,16 +14,14 @@ using std::ostream;
 using std::shared_ptr;
 using std::make_shared;
 
-class ElevatorState
+class ElevatorState : public add_make_shared<ElevatorState>
 {
 public:
-    int at;
-    set<int> lights;
+    const int at;
+    const set<int> lights;
 public:
-    typedef shared_ptr<ElevatorState> Ptr;
-
     ElevatorState() = delete;
-    ElevatorState(int at_, set<int>& lights_);
+    ElevatorState(int at_, const set<int>& lights_);
     ElevatorState(const ElevatorState& s) = default;
     virtual ~ElevatorState();
     ElevatorState & operator=(const ElevatorState& s) = delete;
