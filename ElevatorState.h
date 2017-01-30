@@ -26,12 +26,10 @@ public:
     virtual ~ElevatorState();
     ElevatorState& operator=(const ElevatorState &s) = delete;
     string str() const;
-    Ptr up() const;
-    Ptr down() const;
-    Ptr turnOff() const;
+    ElevatorState::Ptr up() const;
+    ElevatorState::Ptr down() const;
+    ElevatorState::Ptr turnOff() const;
 };
-
-typedef ElevatorState::Ptr ElevatorStatePtr;
 
 ostream& operator<<(ostream &os, const ElevatorState &s);
 

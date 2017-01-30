@@ -26,21 +26,21 @@ string ElevatorState::str() const
     return ss.str();
 }
 
-ElevatorStatePtr ElevatorState::up() const
+ElevatorState::Ptr ElevatorState::up() const
 {
     if(at >= 6)
         throw PreconditionException("maximum floor 6");
     return ElevatorState::make_shared(at + 1, lights);
 }
 
-ElevatorStatePtr ElevatorState::down() const
+ElevatorState::Ptr ElevatorState::down() const
 {
     if(at <= 0)
         throw PreconditionException("minimum floor 0");
     return ElevatorState::make_shared(at - 1, lights);
 }
 
-ElevatorStatePtr ElevatorState::turnOff() const
+ElevatorState::Ptr ElevatorState::turnOff() const
 {
     if(lights.find(at) == lights.end())
         throw PreconditionException("current floor is no lit");
