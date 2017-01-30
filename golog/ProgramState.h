@@ -6,8 +6,6 @@
 #include <string>
 #include <sstream>
 
-#include "ElevatorState.h"
-
 template<typename S>
 class Program;
 
