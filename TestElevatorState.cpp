@@ -21,44 +21,44 @@ using std::stack;
 
 int main()
 {
-    using State = ElevatorState;
-    using Program = Program<State>;
+    using S = ElevatorState;
+    using P = Program<S>;
 
     int at = 0;
     set<int> lights = {3, 5};
-    State::Ptr s0 = State::make_shared(at, lights);
+    S::Ptr s0 = S::make_shared(at, lights);
 
-    Program::Ptr down = exec<State>([](State::Ptr s) -> State::Ptr {return s->down();});
-    Program::Ptr up = exec<State>([](State::Ptr s) -> State::Ptr {return s->up();});
-    Program::Ptr turnOff = exec<State>([](State::Ptr s) -> State::Ptr {return s->turnOff();});
-    Program::Ptr allOff = test<State>([](State::Ptr s) -> bool {return s->lights.empty();});
+    P::Ptr down = exec<S>([](S::Ptr s) -> S::Ptr {return s->down();});
+    P::Ptr up = exec<S>([](S::Ptr s) -> S::Ptr {return s->up();});
+    P::Ptr turnOff = exec<S>([](S::Ptr s) -> S::Ptr {return s->turnOff();});
+    P::Ptr allOff = test<S>([](S::Ptr s) -> bool {return s->lights.empty();});
     
-    Program::Ptr serve_a_floor = choose<State>(
-        seq<State>(star<State>(up), turnOff),
-        seq<State>(star<State>(down), turnOff)
+    P::Ptr serve_a_floor = choose<S>(
+        seq<S>(star<S>(up), turnOff),
+        seq<S>(star<S>(down), turnOff)
     );
     
-    Program::Ptr serve_all_floors = seq<State>(
-        star<State>(serve_a_floor),
+    P::Ptr serve_all_floors = seq<S>(
+        star<S>(serve_a_floor),
         allOff
     );
     
-    map<Program::Ptr, string> actionName;
+    map<P::Ptr, string> actionName;
     actionName[up] = "up";
     actionName[down] = "down";
     actionName[turnOff] = "turnOff";
     
-    Program::Ptr p = serve_all_floors;
+    P::Ptr p = serve_all_floors;
 
     const int maxSolutions = 10;
     int numSolutions = 0;
-    ProgramStateIterator<State> it(make_shared<ProgramState<State>>(p, s0));
+    ProgramStateIterator<S> it(make_shared<ProgramState<S>>(p, s0));
     while(it.hasNext())
     {
-        ProgramState<State>::Ptr ps = it.next();
+        ProgramState<S>::Ptr ps = it.next();
         
         stack<string> plan;
-        ProgramState<State>::Ptr tmp = ps;
+        ProgramState<S>::Ptr tmp = ps;
         while(tmp)
         {
             if(tmp->action) plan.push(actionName[tmp->action]);
