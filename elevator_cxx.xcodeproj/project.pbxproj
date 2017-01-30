@@ -11,15 +11,6 @@
 		8C6C02A11E3A569E000E00F7 /* PreconditionException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C029D1E3A569E000E00F7 /* PreconditionException.cpp */; };
 		8C6C02A21E3A569E000E00F7 /* TestElevatorState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C029F1E3A569E000E00F7 /* TestElevatorState.cpp */; };
 		8C6C02A51E3A5B1C000E00F7 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02A31E3A5B1C000E00F7 /* Util.cpp */; };
-		8C6C02B91E3FAE41000E00F7 /* Choose.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02A71E3FAE41000E00F7 /* Choose.cpp */; };
-		8C6C02BA1E3FAE41000E00F7 /* Empty.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02A91E3FAE41000E00F7 /* Empty.cpp */; };
-		8C6C02BB1E3FAE41000E00F7 /* Exec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02AB1E3FAE41000E00F7 /* Exec.cpp */; };
-		8C6C02BC1E3FAE41000E00F7 /* Program.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02AD1E3FAE41000E00F7 /* Program.cpp */; };
-		8C6C02BD1E3FAE41000E00F7 /* ProgramState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02AF1E3FAE41000E00F7 /* ProgramState.cpp */; };
-		8C6C02BE1E3FAE41000E00F7 /* ProgramStateIterator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02B11E3FAE41000E00F7 /* ProgramStateIterator.cpp */; };
-		8C6C02BF1E3FAE41000E00F7 /* Sequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02B31E3FAE41000E00F7 /* Sequence.cpp */; };
-		8C6C02C01E3FAE41000E00F7 /* Star.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02B51E3FAE41000E00F7 /* Star.cpp */; };
-		8C6C02C11E3FAE41000E00F7 /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6C02B71E3FAE41000E00F7 /* Test.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,23 +34,14 @@
 		8C6C029F1E3A569E000E00F7 /* TestElevatorState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestElevatorState.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02A31E3A5B1C000E00F7 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02A41E3A5B1C000E00F7 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = SOURCE_ROOT; };
-		8C6C02A71E3FAE41000E00F7 /* Choose.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Choose.cpp; path = golog/Choose.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02A81E3FAE41000E00F7 /* Choose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Choose.h; path = golog/Choose.h; sourceTree = SOURCE_ROOT; };
-		8C6C02A91E3FAE41000E00F7 /* Empty.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Empty.cpp; path = golog/Empty.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02AA1E3FAE41000E00F7 /* Empty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Empty.h; path = golog/Empty.h; sourceTree = SOURCE_ROOT; };
-		8C6C02AB1E3FAE41000E00F7 /* Exec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Exec.cpp; path = golog/Exec.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02AC1E3FAE41000E00F7 /* Exec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Exec.h; path = golog/Exec.h; sourceTree = SOURCE_ROOT; };
-		8C6C02AD1E3FAE41000E00F7 /* Program.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Program.cpp; path = golog/Program.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02AE1E3FAE41000E00F7 /* Program.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Program.h; path = golog/Program.h; sourceTree = SOURCE_ROOT; };
-		8C6C02AF1E3FAE41000E00F7 /* ProgramState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProgramState.cpp; path = golog/ProgramState.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02B01E3FAE41000E00F7 /* ProgramState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgramState.h; path = golog/ProgramState.h; sourceTree = SOURCE_ROOT; };
-		8C6C02B11E3FAE41000E00F7 /* ProgramStateIterator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ProgramStateIterator.cpp; path = golog/ProgramStateIterator.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02B21E3FAE41000E00F7 /* ProgramStateIterator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProgramStateIterator.h; path = golog/ProgramStateIterator.h; sourceTree = SOURCE_ROOT; };
-		8C6C02B31E3FAE41000E00F7 /* Sequence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Sequence.cpp; path = golog/Sequence.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02B41E3FAE41000E00F7 /* Sequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Sequence.h; path = golog/Sequence.h; sourceTree = SOURCE_ROOT; };
-		8C6C02B51E3FAE41000E00F7 /* Star.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Star.cpp; path = golog/Star.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02B61E3FAE41000E00F7 /* Star.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Star.h; path = golog/Star.h; sourceTree = SOURCE_ROOT; };
-		8C6C02B71E3FAE41000E00F7 /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Test.cpp; path = golog/Test.cpp; sourceTree = SOURCE_ROOT; };
 		8C6C02B81E3FAE41000E00F7 /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Test.h; path = golog/Test.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -108,23 +90,14 @@
 		8C6C02A61E3FAE2C000E00F7 /* golog */ = {
 			isa = PBXGroup;
 			children = (
-				8C6C02A71E3FAE41000E00F7 /* Choose.cpp */,
 				8C6C02A81E3FAE41000E00F7 /* Choose.h */,
-				8C6C02A91E3FAE41000E00F7 /* Empty.cpp */,
 				8C6C02AA1E3FAE41000E00F7 /* Empty.h */,
-				8C6C02AB1E3FAE41000E00F7 /* Exec.cpp */,
 				8C6C02AC1E3FAE41000E00F7 /* Exec.h */,
-				8C6C02AD1E3FAE41000E00F7 /* Program.cpp */,
 				8C6C02AE1E3FAE41000E00F7 /* Program.h */,
-				8C6C02AF1E3FAE41000E00F7 /* ProgramState.cpp */,
 				8C6C02B01E3FAE41000E00F7 /* ProgramState.h */,
-				8C6C02B11E3FAE41000E00F7 /* ProgramStateIterator.cpp */,
 				8C6C02B21E3FAE41000E00F7 /* ProgramStateIterator.h */,
-				8C6C02B31E3FAE41000E00F7 /* Sequence.cpp */,
 				8C6C02B41E3FAE41000E00F7 /* Sequence.h */,
-				8C6C02B51E3FAE41000E00F7 /* Star.cpp */,
 				8C6C02B61E3FAE41000E00F7 /* Star.h */,
-				8C6C02B71E3FAE41000E00F7 /* Test.cpp */,
 				8C6C02B81E3FAE41000E00F7 /* Test.h */,
 			);
 			name = golog;
@@ -188,15 +161,6 @@
 			files = (
 				8C6C02A01E3A569E000E00F7 /* ElevatorState.cpp in Sources */,
 				8C6C02A11E3A569E000E00F7 /* PreconditionException.cpp in Sources */,
-				8C6C02BD1E3FAE41000E00F7 /* ProgramState.cpp in Sources */,
-				8C6C02C11E3FAE41000E00F7 /* Test.cpp in Sources */,
-				8C6C02C01E3FAE41000E00F7 /* Star.cpp in Sources */,
-				8C6C02B91E3FAE41000E00F7 /* Choose.cpp in Sources */,
-				8C6C02BA1E3FAE41000E00F7 /* Empty.cpp in Sources */,
-				8C6C02BC1E3FAE41000E00F7 /* Program.cpp in Sources */,
-				8C6C02BF1E3FAE41000E00F7 /* Sequence.cpp in Sources */,
-				8C6C02BE1E3FAE41000E00F7 /* ProgramStateIterator.cpp in Sources */,
-				8C6C02BB1E3FAE41000E00F7 /* Exec.cpp in Sources */,
 				8C6C02A21E3A569E000E00F7 /* TestElevatorState.cpp in Sources */,
 				8C6C02A51E3A5B1C000E00F7 /* Util.cpp in Sources */,
 			);

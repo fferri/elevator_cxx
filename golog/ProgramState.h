@@ -4,37 +4,62 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <sstream>
 
 #include "ElevatorState.h"
 
+template<typename S>
 class Program;
 
-// TODO: use templates for State type
-using State = ElevatorState;
-
+template<typename S>
 struct ProgramState {
     using Ptr = std::shared_ptr<ProgramState>;
     
-    Ptr parent;
+    ProgramState::Ptr parent;
 
-    const std::shared_ptr<Program> program;
-    const std::shared_ptr<State> state;
-    const std::shared_ptr<Program> action;
+    const std::shared_ptr<Program<S>> program;
+    const std::shared_ptr<S> state;
+    const std::shared_ptr<Program<S>> action;
     
-    ProgramState(const std::shared_ptr<Program> program_, const std::shared_ptr<State> state_, const ProgramState::Ptr parent_ = nullptr, const std::shared_ptr<Program> action_ = nullptr);
+    ProgramState(const std::shared_ptr<Program<S>> program_, const std::shared_ptr<S> state_, const ProgramState<S>::Ptr parent_ = nullptr, const std::shared_ptr<Program<S>> action_ = nullptr)
+    : program(program_), state(state_), parent(parent_), action(action_)
+    {
+    }
     
-    ProgramState(const ProgramState &ps);
+    ProgramState(const ProgramState<S> &ps)
+    : program(ps.program), state(ps.state), action(ps.action)
+    {
+    }
     
-    void trans(std::vector<ProgramState> &result);
+    void trans(std::vector<ProgramState<S>> &result)
+    {
+        program->trans(state, result);
+    }
     
-    bool isFinal();
+    bool isFinal()
+    {
+        return program->isFinal(state);
+    }
 
-    std::string str() const;
+    std::string str() const
+    {
+        std::stringstream ss;
+        ss << "ProgramState(" << program->str() << ", " << state->str();
+        if(action) ss << ", ACTION=" << *action;
+        ss << ")";
+        return ss.str();
+    }
 };
 
-ostream& operator<<(ostream &os, const ProgramState &ps);
+template<typename S>
+ostream& operator<<(ostream &os, const ProgramState<S> &ps)
+{
+    os << ps.str();
+    return os;
+}
 
-using ProgramStateVector = std::vector<ProgramState>;
+template<typename S>
+using ProgramStateVector = std::vector<ProgramState<S>>;
 
 #endif // GOLOG_PROGRAMSTATE_H_INCLUDED
 

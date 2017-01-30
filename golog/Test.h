@@ -7,27 +7,48 @@
 #include "Util.h"
 #include "Empty.h"
 
-using Predicate = std::function<bool(State::Ptr)>;
+template<typename S>
+using Predicate = std::function<bool(typename S::Ptr)>;
 
-class Test : public Program, public add_make_shared<Test>
+template<typename S>
+class Test : public Program<S>, public add_make_shared<Test<S>>
 {
 private:
-    friend class add_make_shared<Test>;
+    friend class add_make_shared<Test<S>>;
     
-    Test(Predicate predicate_);
+    Test(Predicate<S> predicate_)
+    : predicate(predicate_)
+    {
+    }
     
 public:
-    virtual void trans(State::Ptr state, ProgramStateVector &result);
+    virtual void trans(typename S::Ptr state, ProgramStateVector<S> &result)
+    {
+        if(predicate(state))
+        {
+            result.push_back(ProgramState<S>(empty<S>(), state));
+        }
+    }
     
-    virtual bool isFinal(State::Ptr state);
+    virtual bool isFinal(typename S::Ptr state)
+    {
+        return false;
+    }
     
-    virtual string str() const;
+    virtual string str() const
+    {
+        return "Test(...)";
+    }
     
 private:
-    Predicate predicate;
+    Predicate<S> predicate;
 };
 
-Program::Ptr test(Predicate p);
+template<typename S>
+typename Program<S>::Ptr test(Predicate<S> p)
+{
+    return Test<S>::make_shared(p);
+}
 
 #endif // GOLOG_TEST_H_INCLUDED
 

@@ -3,26 +3,52 @@
 
 #include "Program.h"
 #include "Util.h"
+#include "Empty.h"
+#include "Sequence.h"
 
-class Star : public Program, public add_make_shared<Star>
+template<typename S>
+class Star : public Program<S>, public add_make_shared<Star<S>>
 {
 private:
-    friend class add_make_shared<Star>;
+    friend class add_make_shared<Star<S>>;
     
-    Star(Program::Ptr p_);
+    Star(typename Program<S>::Ptr p_)
+    : p(p_)
+    {
+    }
     
 public:
-    virtual void trans(State::Ptr state, ProgramStateVector &result);
+    virtual void trans(typename S::Ptr state, ProgramStateVector<S> &result)
+    {
+        ProgramStateVector<S> result1;
+        p->trans(state, result1);
+        for(ProgramState<S> &ps : result1)
+            result.push_back(ProgramState<S>(seq<S>(ps.program, this->shared_from_this()), ps.state, nullptr, ps.action));
+        result.push_back(ProgramState<S>(empty<S>(), state));
+    }
     
-    virtual bool isFinal(State::Ptr state);
+    virtual bool isFinal(typename S::Ptr state)
+    {
+        return false;
+    }
     
-    virtual string str() const;
+    virtual string str() const
+    {
+        string s = "Star(";
+        s += p->str();
+        s += ")";
+        return s;
+    }
     
 private:
-    Program::Ptr p;
+    typename Program<S>::Ptr p;
 };
 
-Program::Ptr star(Program::Ptr p);
+template<typename S>
+typename Program<S>::Ptr star(typename Program<S>::Ptr p)
+{
+    return Star<S>::make_shared(p);
+}
 
 #endif // GOLOG_STAR_H_INCLUDED
 
