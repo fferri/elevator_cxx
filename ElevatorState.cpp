@@ -3,7 +3,7 @@
 
 #include <sstream>
 
-ElevatorState::ElevatorState(int at_, const set<int>& lights_)
+ElevatorState::ElevatorState(int at_, const set<int> &lights_)
     : at(at_), lights(lights_)
 {
 }
@@ -17,7 +17,7 @@ string ElevatorState::str() const
     std::stringstream ss;
     ss << "ElevatorState(" << at << ", {";
     const char *sep = "";
-    for(const int& i : lights)
+    for(const int &i : lights)
     {
         ss << sep << i;
         sep = ", ";
@@ -49,7 +49,7 @@ ElevatorStatePtr ElevatorState::turnOff() const
     return ElevatorState::make_shared(at, lights1);
 }
 
-ostream& operator<<(ostream& os, const ElevatorState& s)
+ostream& operator<<(ostream &os, const ElevatorState &s)
 {
     os << s.str();
     return os;

@@ -21,10 +21,10 @@ public:
     const set<int> lights;
 public:
     ElevatorState() = delete;
-    ElevatorState(int at_, const set<int>& lights_);
-    ElevatorState(const ElevatorState& s) = default;
+    ElevatorState(int at_, const set<int> &lights_);
+    ElevatorState(const ElevatorState &s) = default;
     virtual ~ElevatorState();
-    ElevatorState & operator=(const ElevatorState& s) = delete;
+    ElevatorState& operator=(const ElevatorState &s) = delete;
     string str() const;
     Ptr up() const;
     Ptr down() const;
@@ -33,7 +33,7 @@ public:
 
 typedef ElevatorState::Ptr ElevatorStatePtr;
 
-ostream& operator<<(ostream& os, const ElevatorState& s);
+ostream& operator<<(ostream &os, const ElevatorState &s);
 
 #endif // ELEVATORSTATE_H_INCLUDED
 
