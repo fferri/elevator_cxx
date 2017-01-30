@@ -32,7 +32,7 @@ public:
         return false;
     }
     
-    virtual string str() const
+    virtual std::string str() const
     {
         return "Test(...)";
     }

@@ -12,7 +12,7 @@ ElevatorState::~ElevatorState()
 {
 }
 
-string ElevatorState::str() const
+std::string ElevatorState::str() const
 {
     std::stringstream ss;
     ss << "ElevatorState(" << at << ", {";

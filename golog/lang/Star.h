@@ -29,9 +29,9 @@ public:
         return false;
     }
     
-    virtual string str() const
+    virtual std::string str() const
     {
-        string s = "Star(";
+        std::string s = "Star(";
         s += p->str();
         s += ")";
         return s;

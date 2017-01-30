@@ -36,9 +36,9 @@ public:
         return p1->isFinal(state) && p2->isFinal(state);
     }
     
-    virtual string str() const
+    virtual std::string str() const
     {
-        string s = "Sequence(";
+        std::string s = "Sequence(";
         s += p1->str();
         s += ", ";
         s += p2->str();
