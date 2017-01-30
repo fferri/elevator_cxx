@@ -12,22 +12,19 @@ template<typename S>
 using Action = std::function<typename S::Ptr(typename S::Ptr)>;
 
 template<typename S>
-class Exec : public Program<S>, public add_make_shared<Exec<S>>
+class Exec : public Program<S>
 {
-private:
-    friend class add_make_shared<Exec<S>>;
-    
+public:
     Exec(Action<S> action_)
     : action(action_)
     {
     }
     
-public:
     virtual void trans(typename S::Ptr state, ProgramStateVector<S> &result)
     {
         try
         {
-            result.push_back(ProgramState<S>(empty<S>(), action(state), nullptr, this->shared_from_this()));
+            result.push_back(ProgramState<S>(std::make_shared<Empty<S>>(), action(state), nullptr, this->shared_from_this()));
         }
         catch(PreconditionException &ex)
         {
@@ -47,12 +44,6 @@ public:
 private:
     Action<S> action;
 };
-
-template<typename S>
-typename Program<S>::Ptr exec(Action<S> a)
-{
-    return Exec<S>::make_shared(a);
-}
 
 #endif // GOLOG_EXEC_H_INCLUDED
 

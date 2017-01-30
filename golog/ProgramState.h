@@ -50,7 +50,7 @@ struct ProgramState {
 };
 
 template<typename S>
-ostream& operator<<(ostream &os, const ProgramState<S> &ps)
+std::ostream& operator<<(std::ostream &os, const ProgramState<S> &ps)
 {
     os << ps.str();
     return os;

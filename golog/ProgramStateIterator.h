@@ -24,7 +24,7 @@ private:
             ps->trans(pss);
             for(ProgramState<S> &x : pss)
             {
-                s.push(make_shared<ProgramState<S>>(x.program, x.state, ps, x.action));
+                s.push(std::make_shared<ProgramState<S>>(x.program, x.state, ps, x.action));
             }
         }
     }

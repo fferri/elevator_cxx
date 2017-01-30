@@ -7,7 +7,7 @@
 #include "ProgramState.h"
 
 template<typename S>
-class Program
+class Program : public std::enable_shared_from_this<Program<S>>
 {
 public:
     using Ptr = std::shared_ptr<Program>;
@@ -20,7 +20,7 @@ public:
 };
 
 template<typename S>
-ostream& operator<<(ostream &os, const Program<S> &p)
+std::ostream& operator<<(std::ostream &os, const Program<S> &p)
 {
     os << p.str();
     return os;

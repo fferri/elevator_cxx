@@ -2,16 +2,14 @@
 
 #include <sstream>
 
-using std::stringstream;
-
-PreconditionException::PreconditionException(const string &msg_)
-    : msg(msg_), runtime_error(what())
+PreconditionException::PreconditionException(const std::string &msg_)
+: msg(msg_), std::runtime_error(what())
 {
 }
 
 const char * PreconditionException::what() const throw()
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << "PreconditionException";
     if(msg.size() > 0)
     {

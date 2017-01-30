@@ -7,16 +7,13 @@
 #include "Util.h"
 
 template<typename S>
-class Empty : public Program<S>, public add_make_shared<Empty<S>>
+class Empty : public Program<S>
 {
-protected:
-    friend class add_make_shared<Empty<S>>;
-    
+public:
     Empty()
     {
     }
     
-public:
     virtual void trans(typename S::Ptr state, ProgramStateVector<S> &result)
     {
     }
@@ -31,12 +28,6 @@ public:
         return "Empty()";
     }
 };
-
-template<typename S>
-typename Program<S>::Ptr empty()
-{
-    return Empty<S>::make_shared();
-}
 
 #endif // GOLOG_EMPTY_H_INCLUDED
 

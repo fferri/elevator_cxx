@@ -5,17 +5,14 @@
 #include "Util.h"
 
 template<typename S>
-class Choose : public Program<S>, public add_make_shared<Choose<S>>
+class Choose : public Program<S>
 {
-private:
-    friend class add_make_shared<Choose<S>>;
-    
+public:
     Choose(typename Program<S>::Ptr p1_, typename Program<S>::Ptr p2_)
     : p1(p1_), p2(p2_)
     {
     }
     
-public:
     virtual void trans(typename S::Ptr state, ProgramStateVector<S> &result)
     {
         ProgramStateVector<S> result1;
@@ -48,12 +45,6 @@ private:
     typename Program<S>::Ptr p1;
     typename Program<S>::Ptr p2;
 };
-
-template<typename S>
-typename Program<S>::Ptr choose(typename Program<S>::Ptr p1, typename Program<S>::Ptr p2)
-{
-    return Choose<S>::make_shared(p1, p2);
-}
 
 #endif // GOLOG_CHOOSE_H_INCLUDED
 

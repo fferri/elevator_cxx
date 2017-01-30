@@ -8,30 +8,25 @@
 #include <iostream>
 #include <memory>
 
-using std::string;
-using std::set;
-using std::ostream;
-using std::shared_ptr;
-using std::make_shared;
-
-class ElevatorState : public add_make_shared<ElevatorState>
+class ElevatorState
 {
 public:
     const int at;
-    const set<int> lights;
+    const std::set<int> lights;
 public:
+    using Ptr = std::shared_ptr<ElevatorState>;
     ElevatorState() = delete;
-    ElevatorState(int at_, const set<int> &lights_);
+    ElevatorState(int at_, const std::set<int> &lights_);
     ElevatorState(const ElevatorState &s) = default;
     virtual ~ElevatorState();
     ElevatorState& operator=(const ElevatorState &s) = delete;
-    string str() const;
+    std::string str() const;
     ElevatorState::Ptr up() const;
     ElevatorState::Ptr down() const;
     ElevatorState::Ptr turnOff() const;
 };
 
-ostream& operator<<(ostream &os, const ElevatorState &s);
+std::ostream& operator<<(std::ostream &os, const ElevatorState &s);
 
 #endif // ELEVATORSTATE_H_INCLUDED
 

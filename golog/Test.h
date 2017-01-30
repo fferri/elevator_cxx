@@ -11,22 +11,19 @@ template<typename S>
 using Predicate = std::function<bool(typename S::Ptr)>;
 
 template<typename S>
-class Test : public Program<S>, public add_make_shared<Test<S>>
+class Test : public Program<S>
 {
-private:
-    friend class add_make_shared<Test<S>>;
-    
+public:
     Test(Predicate<S> predicate_)
     : predicate(predicate_)
     {
     }
     
-public:
     virtual void trans(typename S::Ptr state, ProgramStateVector<S> &result)
     {
         if(predicate(state))
         {
-            result.push_back(ProgramState<S>(empty<S>(), state));
+            result.push_back(ProgramState<S>(std::make_shared<Empty<S>>(), state));
         }
     }
     
@@ -43,12 +40,6 @@ public:
 private:
     Predicate<S> predicate;
 };
-
-template<typename S>
-typename Program<S>::Ptr test(Predicate<S> p)
-{
-    return Test<S>::make_shared(p);
-}
 
 #endif // GOLOG_TEST_H_INCLUDED
 

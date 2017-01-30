@@ -3,7 +3,7 @@
 
 #include <sstream>
 
-ElevatorState::ElevatorState(int at_, const set<int> &lights_)
+ElevatorState::ElevatorState(int at_, const std::set<int> &lights_)
     : at(at_), lights(lights_)
 {
 }
@@ -30,26 +30,26 @@ ElevatorState::Ptr ElevatorState::up() const
 {
     if(at >= 6)
         throw PreconditionException("maximum floor 6");
-    return ElevatorState::make_shared(at + 1, lights);
+    return std::make_shared<ElevatorState>(at + 1, lights);
 }
 
 ElevatorState::Ptr ElevatorState::down() const
 {
     if(at <= 0)
         throw PreconditionException("minimum floor 0");
-    return ElevatorState::make_shared(at - 1, lights);
+    return std::make_shared<ElevatorState>(at - 1, lights);
 }
 
 ElevatorState::Ptr ElevatorState::turnOff() const
 {
     if(lights.find(at) == lights.end())
         throw PreconditionException("current floor is no lit");
-    set<int> lights1(lights);
+    std::set<int> lights1(lights);
     lights1.erase(at);
-    return ElevatorState::make_shared(at, lights1);
+    return std::make_shared<ElevatorState>(at, lights1);
 }
 
-ostream& operator<<(ostream &os, const ElevatorState &s)
+std::ostream& operator<<(std::ostream &os, const ElevatorState &s)
 {
     os << s.str();
     return os;

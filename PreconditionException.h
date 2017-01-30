@@ -4,14 +4,12 @@
 #include <string>
 #include <exception>
 
-using std::string;
-using std::runtime_error;
-
-class PreconditionException : public runtime_error
+class PreconditionException : public std::runtime_error
 {
-    string msg;
+    std::string msg;
+    
 public:
-    PreconditionException(const string &msg_);
+    PreconditionException(const std::string &msg_);
     virtual const char* what() const throw();
 };
 
