@@ -21,7 +21,7 @@ struct ProgramState {
     const std::shared_ptr<State> state;
     const std::shared_ptr<Program> action;
     
-    ProgramState(const std::shared_ptr<Program> program_, const std::shared_ptr<State> state_, const Ptr parent_ = nullptr, const std::shared_ptr<Program> action_ = nullptr);
+    ProgramState(const std::shared_ptr<Program> program_, const std::shared_ptr<State> state_, const ProgramState::Ptr parent_ = nullptr, const std::shared_ptr<Program> action_ = nullptr);
     
     ProgramState(const ProgramState &ps);
     
