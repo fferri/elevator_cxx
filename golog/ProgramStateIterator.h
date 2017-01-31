@@ -35,6 +35,11 @@ public:
         s.push(ps0);
     }
     
+    ProgramStateIterator(typename Program<S>::Ptr p, typename S::Ptr s)
+    {
+        s.push(std::make_shared<ProgramState<S>>(p, s));
+    }
+    
     bool hasNext()
     {
         expandTop();

@@ -59,7 +59,7 @@ int main()
 
     const int maxSolutions = 10;
     int numSolutions = 0;
-    ProgramStateIterator<S> it(std::make_shared<ProgramState<S>>(serve_all_floors, s0));
+    ProgramStateIterator<S> it(serve_all_floors, s0);
     while(it.hasNext())
     {
         ProgramState<S>::Ptr ps = it.next();
